@@ -29,14 +29,19 @@ This project automates the creation of visual reports from survey data collected
 ```
 Qualtrics_Survey_Reports_Automated_Pipeline/
 ├── .env                     # Environment configuration for API keys
-├── data_extraction.py       # Logic for fetching and saving raw data
-├── report_generation.py     # Logic for generating reports
-├── raw_data/                # Downloaded raw data files
-├── intermediate_data/       # Intermediate transformation files for traceability
-├── processed_data/          # Final cleaned & separated datasets
-├── outputs/                 # Generated PDF reports
-├── main.py                  # Pipeline controller script
-├── requirements.txt         # Python package dependencies
+├── .venv/                   # Virtual environment containing dependencies for this python project
+├── MySurveys/               # Directory where data would be stored
+|   ├── raw_data/            # Directory where raw data downloaded via API is stored
+|   ├── intermediate_data/   # Directory where intermediate data (useful for debugging) is stored
+|   └── processed_data/      # Directory where processed/transformed data to be used for analysis/report generation is stored.
+├── Reports/                 # Directory for storing report pdfs
+|   ├── complete_reports/    # Directory for storing reports where data for both student and corresponding supervisor is stored.
+|   ├── only_students_rpts/  # Directory for storing reports where data for only student is available.
+|   └── only_supervisor_rpts/# Directory for storing reports where data for only supervisor is available and not student data.
+├── scripts/                 # This directory has scripts consisting of functions to perform all tasks and these functions are called in main file.
+├── main.ipynb               # This python notebook contains code for executing all fucntions and running this pipeline.
+├── Arial.ttf                # Font file required for pdf report generation
+├── skills.png               # Image of list of skills to be used in reports
 └── README.md                # Project documentation
 ```
 
@@ -53,8 +58,10 @@ cd Qualtrics_Survey_Reports_Automated_Pipeline
 2. **Create and Configure `.env` File**
 Create a `.env` file in the root directory:
 ```env
-QUALTRICS_API_TOKEN=your_token_here
-QUALTRICS_DATA_CENTER_ID=your_data_center
+API_TOKEN = "your api token"
+INTERN_SURVEY_ID = "your student survey id"
+SUPERVISOR_SURVEY_ID = "your supervisor survey id"
+DATACENTER_ID = "your qualtrics datacenter id"
 ```
 
 3. **Create Virtual Environment (Optional)**
@@ -62,12 +69,6 @@ QUALTRICS_DATA_CENTER_ID=your_data_center
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 ```
-
-4. **Install Dependencies**
-```bash
-pip install -r requirements.txt
-```
-
 ---
 
 ## ▶️ How to Use
@@ -82,13 +83,13 @@ python main.py
    - `processed_data/complete_records/`
    - `processed_data/only_students/`
    - `processed_data/only_supervisors/`
-5. PDF reports will be generated in the `outputs/` directory based on data type.
+5. PDF reports will be generated in the `Reports/` directory based on data type.
 
 ---
 
 ## 🔁 Workflow and Code Breakdown
 
-### **main.py**
+### **main.ipynb**
 - Controls the entire pipeline flow.
 - Loads environment variables.
 - Imports and runs functions from `data_extraction.py` and `report_generation.py`.
@@ -114,7 +115,7 @@ python main.py
 - Reads cleaned data
 - Generates bar charts for responses using matplotlib
 - Creates a multi-page PDF using FPDF
-- Stores output in the `outputs/` directory
+- Stores output in the `Reports/` directory
 
 ---
 
