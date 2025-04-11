@@ -113,9 +113,12 @@ def generate_report_with_supervisor(dataset, stu_fname, stu_last, improv, streng
     ax.set_xticks(range(0, 8))
     
     # Create generic labels for skills (Skill 1, Skill 2, etc.).
-    skill_labels = [f"Skill {i}" for i in range(1, num_skills + 1)]
+    skill_labels = [f"Skill {i}" for i in range(1, 28)]
     ax.set_yticks(y_positions)
     ax.set_yticklabels(skill_labels)
+
+    # Invert y-axis to make first item appear at the top
+    ax.invert_yaxis()
 
     # Add axis labels and title.
     ax.set_xlabel('Score', fontname="Arial", fontsize=12)
@@ -169,7 +172,8 @@ def generate_report_with_supervisor(dataset, stu_fname, stu_last, improv, streng
 
     # Wrap and position the paragraphs.
     p1.wrapOn(my_canvas, 350, 2)
-    p1.drawOn(my_canvas, 148, 740)
+    # p1.drawOn(my_canvas, 148, 740)
+    p1.drawOn(my_canvas, 158, 730)
     p2.wrapOn(my_canvas, 200, 2)
     p2.drawOn(my_canvas, 390, 463)
     
@@ -267,20 +271,31 @@ def generate_report_without_supervisor(dataset, stu_fname, stu_last):
     student_color = '#a6192e'  # Scarlet/Red for student rating bars
 
     fig, ax = plt.subplots(figsize=(15, 6))
+
+    # Compute y-axis positions for the 27 skills.
     y_positions = np.arange(len(dataset)) * 2.0  # Spacing between bars
+
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
 
     # Plot horizontal bar chart using the first column of dataset as student ratings
     ax.barh(y_positions, dataset.iloc[:, 0], height=0.8, color=student_color, label='Student Rating')
+    # ax.barh(y_positions, dataset_reversed.ilo[:, 0], height=0.8, color=student_color, label='Student Rating')
+
+    skill_labels = [f"Skill {i}" for i in range(1, 28)]
 
     # Set labels using the DataFrame index (assumed to be the skill names)
+    # ax.set_yticks(y_positions)
+    # ax.set_yticklabels(dataset.index)
     ax.set_yticks(y_positions)
-    ax.set_yticklabels(dataset.index)
+    ax.set_yticklabels(skill_labels)
     ax.set_xlabel('Score', fontname="Arial", fontsize=12)
     ax.set_ylabel('Skill', fontname="Arial", fontsize=12)
     ax.set_title('Student Ratings', fontname="Arial", fontsize=14)
+
+    # Invert y-axis to make first item appear at the top
+    ax.invert_yaxis()
 
     # Legend placed below the x-axis
     fig.legend(loc='upper center', bbox_to_anchor=(0.5, -0.03), ncol=1, fontsize=10)
@@ -310,7 +325,7 @@ def generate_report_without_supervisor(dataset, stu_fname, stu_last):
         para_style1
     )
     title_paragraph.wrapOn(my_canvas, 350, 2)
-    title_paragraph.drawOn(my_canvas, 148, 740)
+    title_paragraph.drawOn(my_canvas, 154, 734)
 
     # Draw the skills image (assumes 'skills.png' is available in the working directory)
     my_canvas.drawImage('skills.png', 30, 405, width=350, height=330)
@@ -441,16 +456,22 @@ def generate_report_without_student(dataset, stu_fname, stu_last, improv, streng
 
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
+        
+    skill_labels = [f"Skill {i}" for i in range(1, 28)]
+
 
     # Plot horizontal bar chart using the first column of dataset as student ratings
     ax.barh(y_positions, dataset.iloc[:, 0], height=0.8, color=student_color, label='Supervisor Rating')
 
     # Set labels using the DataFrame index (assumed to be the skill names)
     ax.set_yticks(y_positions)
-    ax.set_yticklabels(dataset.index)
+    ax.set_yticklabels(skill_labels)
     ax.set_xlabel('Score', fontname="Arial", fontsize=12)
     ax.set_ylabel('Skill', fontname="Arial", fontsize=12)
     ax.set_title('Supervisor Ratings', fontname="Arial", fontsize=14)
+
+    # Invert y-axis to make first item appear at the top
+    ax.invert_yaxis()
 
     # Legend placed below the x-axis
     fig.legend(loc='upper center', bbox_to_anchor=(0.5, -0.03), ncol=1, fontsize=10)
@@ -480,7 +501,7 @@ def generate_report_without_student(dataset, stu_fname, stu_last, improv, streng
         para_style1
     )
     title_paragraph.wrapOn(my_canvas, 350, 2)
-    title_paragraph.drawOn(my_canvas, 148, 740)
+    title_paragraph.drawOn(my_canvas, 154, 734)
 
     # Draw the skills image (assumes 'skills.png' is available in the working directory)
     my_canvas.drawImage('skills.png', 30, 405, width=350, height=330)
